@@ -140,30 +140,64 @@
         <script src="/js/custom.js"></script>
 </body>
 
-
 </html>
 
 <script>
-	const ctx = document.getElementById('myChart');
 
-
-
-new Chart(ctx, {
-type: 'bar',
-data: {
-	labels: loadMovies(),
-	datasets: [{
-	label: 'Graph',
-	data: [1,2],
-	borderWidth: 1
-	}]
-},
-options: {
-	scales: {
-	y: {
-		beginAtZero: true
-	}
-	}
+function loadMovies(callback){
+    $.ajax({
+        url: 'https://localhost:8443/movies',
+    })
+    .then(response => {
+        if(response.status !== 200){
+            console.log("Looks like there was a problem. Status Code: " + response.status);
+            return;
+        }
+        response.ajax().done(data => {//function(callback) that is executed once the response is received
+            //console.log("Response received");
+            //sleep(2000);
+            //$('.pagination').html("")
+            console.log("Data:",JSON.stringify(data));
+            callback(data);
+        }).catch(function(err){
+            console.log("AJAX parse Error :-S",err);
+        });
+    })
+    .catch(function(err){
+        console.log("Error :-S",err);
+    });
 }
-});
+
+//$(document).ready(function () {
+
+
+    //loadMovies(function (movies) {
+        const ctx = document.getElementById('myChart');
+
+        /*charge just 4 films from server
+		titles = []
+        for(var i=0; i<movies.length; i++){
+            titles.append(movies[i].getTitle());
+        }*/
+    
+        new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['red','blue'],
+            datasets: [{
+            label: 'Graph',
+            data: [1,2],
+            borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+            y: {
+                beginAtZero: true
+            }
+            }
+        }
+        });
+    //});
+//});
 </script>

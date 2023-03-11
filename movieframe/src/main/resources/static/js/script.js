@@ -55,7 +55,7 @@ function showReview(review) {
     )
 }
 
-function loadMovies(){
+function loadMovies(callback){
     $.ajax({
         url: 'https://localhost:8081/movies',
     })
@@ -69,7 +69,7 @@ function loadMovies(){
             sleep(2000);
             //$('.pagination').html("")
             console.log("Data:",JSON.stringify(data));
-            //callback(data);
+            callback(data);
         }).catch(function(err){
             console.log("AJAX parse Error :-S",err);
         });
@@ -81,14 +81,39 @@ function loadMovies(){
 
 $(document).ready(function () {
 
-    //loadMovies(function (movies) {
-        
-    //});
+    loadMovies(function (movies) {
+        const ctx = document.getElementById("#myChart");
 
-    var input_radio = $('#vale_radio')
-    var input_description = $('#value_description')
-    var input_author = $('#value_author')
-    var input_title = $('#value_title')
+        //charge just 4 films from server
+        titles = []
+        for(var i=0; i<movies.length; i++){
+            titles.append(movies[i].getTitle());
+        }
+
+        numReviews = []
+        for(var i=0; i<movies.length; i++){
+            numReviews.append(movies[i].getReviews().size());
+        }
+    
+        Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['red','blue'],
+            datasets: [{
+            label: 'Graph',
+            data: numReviews,
+            borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+            y: {
+                beginAtZero: true
+            }
+            }
+        }
+        });
+    });
 
     //Handle delete buttons
     $('.comments').click(function (event) {

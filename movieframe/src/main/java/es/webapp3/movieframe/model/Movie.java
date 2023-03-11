@@ -1,10 +1,11 @@
 package es.webapp3.movieframe.model;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,9 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
-public class Movie implements Serializable{
+public class Movie{
 
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,13 +25,16 @@ public class Movie implements Serializable{
     
     private String title;
     private String gender;
+
+    @Column(columnDefinition = "TEXT")
     private String movie_description;
     @Lob
+    @JsonIgnore
     private Blob movie_img;
     
     private int movie_votes;
     
-    @OneToMany
+    @OneToMany(mappedBy="movie")
     private List<Review> reviews = new ArrayList<>();
 
     public Movie(){}

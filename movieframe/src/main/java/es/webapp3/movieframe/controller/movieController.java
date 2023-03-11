@@ -22,20 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 import es.webapp3.movieframe.model.Movie;
 import es.webapp3.movieframe.service.MovieService;
 
-@Controller
+@RestController
 public class movieController {
     
     @Autowired
     private MovieService movieService;
 
     @GetMapping("/movies")
-    public List<String> getMovies(Model model){
-        List<String> titles = new ArrayList<>();
-        List<Movie> movies = movieService.findAll();
-        for(Movie m: movies){
-            titles.add(m.getTitle());
-        }
-        return titles;
+    public List<Movie> getMovies(Model model){
+        return movieService.findAll();
     }
 
     @GetMapping("/")

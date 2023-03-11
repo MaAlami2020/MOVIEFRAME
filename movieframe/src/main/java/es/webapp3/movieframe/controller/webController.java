@@ -2,8 +2,9 @@ package es.webapp3.movieframe.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class webController {
 
     @GetMapping("/log_in")

@@ -1,11 +1,11 @@
 package es.webapp3.movieframe.model;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 import javax.persistence.*;
 
 @Entity
-public class Review implements Serializable{
+public class Review{
     
 
     @Id
@@ -16,6 +16,8 @@ public class Review implements Serializable{
     private int rating;
     private String coments; 
     private String title;
+
+    @ManyToOne
     private Movie movie;
 
     public Review(){}
