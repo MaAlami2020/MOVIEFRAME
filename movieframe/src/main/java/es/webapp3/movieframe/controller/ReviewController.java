@@ -35,9 +35,9 @@ public class ReviewController {
 
     @PostMapping("/new")
 	public ResponseEntity<Review> newReview(Model model,@PathVariable Movie movie,@RequestBody Review review) {
-        review.setAuthor(usersession.getUser().getUsername());
+        //review.setAuthor(usersession.getUser().getUsername());
 
-        review.setTitle(movie.getTitle());
+       
 
         movie.getReviews().add(review);
 
@@ -61,7 +61,7 @@ public class ReviewController {
     @GetMapping("/{user}")
     public String showUserReviews(Model model){
 
-         model.addAttribute("reviews",reviewService.findUserReviews(usersession.getUser()));
+         //model.addAttribute("reviews",reviewService.findUserReviews(usersession.getUser()));
 
          return "reviews_screen";
     }

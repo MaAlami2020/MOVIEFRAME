@@ -6333,14 +6333,18 @@ ul {
 .movie-single .movie-single-ct .mvcast-item .cast-it p {
   margin-bottom: 0;
 }
-.movie-single .movie-single-ct .mv-user-review-item .no-star {
+.movie-single .movie-single-ct  {
   color: #f5b50a;
   font-size: #abb7c4;
 }
-.movie-single .movie-single-ct .mv-user-review-item .no-star i.last {
+.no-star{
+  color: #f5b50a;
+  font-size: 30px;
+}
+.movie-single .movie-single-ct  {
   color: #abb7c4;
 }
-.movie-single .movie-single-ct .tab.review .mv-user-review-item.last {
+.movie-single .movie-single-ct .tab.review {
   border-bottom: 0;
 }
 .movie-single .sb-it {

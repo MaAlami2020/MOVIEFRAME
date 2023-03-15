@@ -4,14 +4,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class director_controller {
-
-    @GetMapping("/director")
-    public String director(Model model){
-        //model.addAttribute("name", "Hola mundo");
-        return "director_screen";
-    }
-
+    
    
 }

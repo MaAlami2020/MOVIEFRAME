@@ -18,9 +18,9 @@ public class ReviewService {
 
     private AtomicLong nextId = new AtomicLong(1);
 
-	public List<Review> findUserReviews(User user) {
+	/*public List<Review> findUserReviews(User user) {
         return reviewsRepository.findByUser(user.getUsername());
-	}
+	}*/
 
 	public List<Review> findReviews() {
         return reviewsRepository.findAll();
@@ -31,10 +31,6 @@ public class ReviewService {
 	}
 
 	public void saveReview(Review review) {
-
-		long id = nextId.getAndIncrement();
-
-		review.setId(id);
 
 		reviewsRepository.save(review);
 	}

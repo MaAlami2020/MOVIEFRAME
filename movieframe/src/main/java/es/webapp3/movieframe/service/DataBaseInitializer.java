@@ -13,9 +13,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.webapp3.movieframe.model.Director;
 import es.webapp3.movieframe.model.Movie;
 import es.webapp3.movieframe.model.Review;
 import es.webapp3.movieframe.model.User;
+import es.webapp3.movieframe.repository.DirectorRepository;
 import es.webapp3.movieframe.repository.MovieRepository;
 import es.webapp3.movieframe.repository.ReviewRepository;
 import es.webapp3.movieframe.repository.UserRepository;
@@ -27,10 +29,13 @@ public class DataBaseInitializer {
     private MovieRepository movieRepository;
 
     @Autowired
-    private ReviewRepository reviewsRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
 	private UserRepository usersRepository;
+
+    @Autowired
+	private DirectorRepository directorRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -44,34 +49,84 @@ public class DataBaseInitializer {
 	@PostConstruct
     public void init() throws IOException, URISyntaxException{
 
-        Movie movie1 = new Movie("Avatar", "Sci-Fi", "Jake Sully vive con su nueva familia en el planeta de Pandora. Cuando una amenaza conocida regresa, Jake debe trabajar con Neytiri y el ejército de la raza na'vi para proteger su planeta.",3);//"https://www.youtube.com/embed/FSyWAxUg3Go");  
-		setMovieImage(movie1, "/images/uploads/film1.jpg"); 
+        Review review1 = new Review(/*"edwardkennedy",*/3,"Africa's burgeoning talents from across the continent ...");
+      
+        Review review2 = new Review(/*"edwardkennedy",*/5,"Magnolia Pictures has acquired U.S. the...");
+
+        Review review3 = new Review(/*"hughjackman",*/4,"New Line’s remake of “Going in Style” launched with a moderate $...");
+
+        Director director1 = new Director("Joss Whedon","Joseph Hill Whedon","23 de junio de 1964 (58 años), New York","New York",4.0,"Action", "Sci-Fi", "Adventure");
+        setDirectorImage(director1,"/images/uploads/josh_whedon3.jpg");
+
+        director1.setBiography("Joseph Hill Whedon (/ˈhwiːdən/; born June 23, 1964) is an American filmmaker, composer, and comic book...");
+
+        Movie movie1 = new Movie();
+        movie1.setTitle("Avatar");
+        movie1.setCategory("Sci-Fi");
+        movie1.setDescription("Jake Sully vive con su nueva familia en el planeta de Pandora. Cuando una amenaza conocida regresa, Jake debe trabajar con Neytiri y el ejército de la raza na'vi para proteger su planeta.");
+        movie1.setVotes(3);  
+		setMovieImage(movie1, "/images/uploads/film1.jpg");
+        movie1.setReview(review1);
+        movie1.setReview(review2);
+
 		movieRepository.save(movie1);
+
+        reviewRepository.save(review1);
+        reviewRepository.save(review2);
 		
-        Movie movie2 = new Movie("Ant-Man and the Wasp: Quantumania", "Adventure", "Ant-Man and the Wasp: Quantumania. Lang y van Dyne exploran el Reino Cuántico junto con su familia y se enfrentan a Kang el Conquistador.",4);   
+        Movie movie2 = new Movie();
+        movie2.setTitle("Ant-Man and the Wasp: Quantumania");
+        movie2.setCategory("Adventure");
+        movie2.setDescription("Ant-Man and the Wasp: Quantumania. Lang y van Dyne exploran el Reino Cuántico junto con su familia y se enfrentan a Kang el Conquistador.");
+        movie2.setVotes(4);   
 		setMovieImage(movie2,"/images/uploads/film2.jpg");
+
         movieRepository.save(movie2);
-
-        Movie movie3 = new Movie("Missing", "mystery", "June Allen, una adolescente que intenta encontrar a su madre desaparecida luego de que esta desaparece de vacaciones en Colombia con su nuevo novio.",2);   
-		setMovieImage(movie3,"/images/uploads/film3.jpg"); 
-        movieRepository.save(movie3);
-
-        Movie movie4 = new Movie("El Gato con Botas: el último deseo", "Animation", "La película es una secuela de El Gato con Botas y es derivada de la franquicia de Shrek.",1);   
-		setMovieImage(movie4,"/images/uploads/film4.jpg");
-        movieRepository.save(movie4);
-
-        Movie movie5 = new Movie("As bestas", "Drama", "Está ambientada en Galicia y rodada en francés, español y gallego.",3);     
-		setMovieImage(movie5,"/images/uploads/film5.jpg"); 
-        movieRepository.save(movie5);
-
-        Movie movie6 = new Movie("Los Fabelman", "Drama", "Contada a través de una historia original del ficticio Sammy Fabelman, un joven aspirante a cineasta. La película está dedicada a los recuerdos de los padres de la vida real de Spielberg, Arnold Spielberg y Leah Adler.",5); 
-        setMovieImage(movie6,"/images/uploads/film6.jpg");
-        movieRepository.save(movie6);  
         
 
-        reviewsRepository.save(new Review("edwardkennedy",3,"Africa's burgeoning talents from across the continent ...","Godzilla: King Of The Monsters Adds O’Shea Jackson Jr"));
-        reviewsRepository.save(new Review("edwardkennedy",5,"Magnolia Pictures has acquired U.S. the...","Magnolia Nabs ‘Lucky’ Starring Harry Dean Stanton"));
-        reviewsRepository.save(new Review("hughjackman",4,"New Line’s remake of “Going in Style” launched with a moderate $...","‘Going in Style’ Tops ‘Smurfs: The Lost Village’ at Thursday Box Office"));		
+        Movie movie3 = new Movie();
+        movie3.setTitle("Missing");
+        movie3.setCategory("mystery");
+        movie3.setDescription("June Allen, una adolescente que intenta encontrar a su madre desaparecida luego de que esta desaparece de vacaciones en Colombia con su nuevo novio.");
+        movie3.setVotes(2);   
+		setMovieImage(movie3,"/images/uploads/film3.jpg");
+        movie3.setReview(review3); 
+
+        movieRepository.save(movie3);
+
+        reviewRepository.save(review3);
+
+        Movie movie4 = new Movie();
+        movie4.setTitle("El Gato con Botas: el último deseo");
+        movie4.setCategory("Animation");
+        movie4.setDescription("La película es una secuela de El Gato con Botas y es derivada de la franquicia de Shrek.");
+        movie4.setVotes(1);   
+		setMovieImage(movie4,"/images/uploads/film4.jpg");
+
+        movieRepository.save(movie4);   
+
+        Movie movie5 = new Movie();
+        movie5.setTitle("As bestas");
+        movie5.setCategory("Drama");
+        movie5.setDescription("Está ambientada en Galicia y rodada en francés, español y gallego.");
+        movie5.setVotes(3);     
+		setMovieImage(movie5,"/images/uploads/film5.jpg");
+
+        movieRepository.save(movie5);
+        //director1 directed movie5
+        //movie5 was directed by director1
+        director1.getMovies().add(movie5);
+
+        directorRepository.save(director1);
+        
+        Movie movie6 = new Movie();
+        movie6.setTitle("Los Fabelman");
+        movie6.setCategory("Drama");
+        movie6.setDescription("Contada a través de una historia original del ficticio Sammy Fabelman, un joven aspirante a cineasta. La película está dedicada a los recuerdos de los padres de la vida real de Spielberg, Arnold Spielberg y Leah Adler.");
+        movie6.setVotes(5); 
+        setMovieImage(movie6,"/images/uploads/film6.jpg");
+
+        movieRepository.save(movie6);  		
 		
 		usersRepository.save(new User("edwardKennedy",passwordEncoder.encode("edu123456"),"Edward","edward@kennedy.com","USER"));
         usersRepository.save(new User(user,"{bcrypt}"+encodedPassword,"Hugh","hugh@jack.com","USER","ADMIN"));
@@ -83,6 +138,9 @@ public class DataBaseInitializer {
 		movie.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
 	}
 
+    public void setDirectorImage(Director director, String ClasspathResource)throws IOException{
+		Resource image = new ClassPathResource(ClasspathResource);
+		director.setImageFile(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
+	}
    
-    
 }

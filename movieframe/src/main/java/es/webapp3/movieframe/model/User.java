@@ -1,13 +1,12 @@
 package es.webapp3.movieframe.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
 @Entity
-public class User implements Serializable{
+public class User{
 
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +20,7 @@ public class User implements Serializable{
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     public User(){}
@@ -35,6 +34,20 @@ public class User implements Serializable{
         this.roles=List.of(roles);
     }
 
+    public void setReview(Review review){
+        reviews.add(review);
+        review.setUser(this);
+    }
+
+    public void removeReview(Review review){
+        reviews.remove(review);
+        review.setUser(null);
+    }
+
+    public List<Review> getReviews(){
+        return reviews;
+    }
+    
     public void setId(Long id){
         this.id=id;
     }
@@ -77,10 +90,6 @@ public class User implements Serializable{
 
     public String getEmail(){
         return email;
-    }
-    
-    public List<Review> getReviews(){
-        return reviews;
     }
 
     public List<String> getRoles(){

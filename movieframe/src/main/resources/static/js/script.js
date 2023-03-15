@@ -81,40 +81,6 @@ function loadMovies(callback){
 
 $(document).ready(function () {
 
-    loadMovies(function (movies) {
-        const ctx = document.getElementById("#myChart");
-
-        //charge just 4 films from server
-        titles = []
-        for(var i=0; i<movies.length; i++){
-            titles.append(movies[i].getTitle());
-        }
-
-        numReviews = []
-        for(var i=0; i<movies.length; i++){
-            numReviews.append(movies[i].getReviews().size());
-        }
-    
-        Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['red','blue'],
-            datasets: [{
-            label: 'Graph',
-            data: numReviews,
-            borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-            y: {
-                beginAtZero: true
-            }
-            }
-        }
-        });
-    });
-
     //Handle delete buttons
     $('.comments').click(function (event) {
         var elem = $(event.target);
