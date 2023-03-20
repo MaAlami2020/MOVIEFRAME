@@ -1,0 +1,216 @@
+<!--en este pantalla se muestra el listado de reseñas de todos los usuarios registrados en la app con un boton de eliminar en cada una de ellas-->
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8">
+         <!-- Mobile specific meta-->
+        <meta name=viewport content="width=device-width, initial-scale=1">
+        <meta name="format-detection" content="telephone-no">
+
+         <!--Google Font-->
+        <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+       
+        <!-- CSS files -->
+        <link rel="stylesheet" href="/css/plugins.css">
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+
+<body>
+
+<!--preloading-->
+<div id="preloader">
+    <img class="logo" src="/images/logoMF.png" alt="" width="119" height="58">
+    <div id="status">
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!--end of preloading-->
+
+<!-- BEGIN | Header -->
+<header class="ht-header">
+	<div class="container">
+		<nav class="navbar navbar-default navbar-custom">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header logo">
+				    <div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					    <span class="sr-only">Toggle navigation</span>
+					    <div id="nav-icon1">
+							<span></span>
+							<span></span>
+							<span></span>
+						</div>
+				    </div>
+				    <img class="logo" src="/images/logoMF.png" alt="" width="119" height="58">
+			    </div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav flex-child-menu menu-right">               
+						<li class="btn btn-default dropdown-toggle lv1"><a href="/">Home</a></li>
+					</ul>
+				</div>
+			<!-- /.navbar-collapse -->
+	    </nav>
+	    
+	</div>
+</header>
+<!-- END | Header -->
+
+<div class="hero common-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1> User comments listing</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- blog detail section-->
+<div class="page-single">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<div class="blog-detail-ct">
+					
+					<!-- comment items -->
+					<div id="comments">
+
+					</div>	
+					
+				</div>
+				<ul class="pagination">               
+					<li ><button>more results</button></li>
+				</ul>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<div id="spinner-div" class="pt-5">
+	<div class="spinner-border text-primary" role="status">
+	</div>
+  </div>
+  
+ <!--end of  blog detail section
+footer section-->
+<footer class="ht-footer">
+	<div class="container">
+		<div class="flex-parent-ft">
+			<div class="flex-child-ft item1">
+				<p>Desarrollo de aplicaciones web<br></p>
+				<p>Maria Amparo Alami <br> Cristobal Justo Rustarazo <br> Cassiel Seth Mayorca Heirisman <br>
+				Javier García Seller <br> Shadith Perez Rivera </p>
+			</div>		
+		</div>
+	</div>
+	
+</footer>
+<!-- end of footer section-->
+    <script src="/js/jquery.js"></script>
+    <script src="/js/plugins.js"></script>
+    <script src="/js/plugins2.js"></script>
+    <script src="/js/custom.js"></script>
+
+</body>
+<script>
+
+	var tam = 10;
+	console.log(tam);
+	
+	let ruta='https://localhost:8443/userReviewsList/?size=' + tam;
+	console.log(ruta);
+
+	function loadReviews(callback,tam) {
+		$.ajax({
+			url: ruta
+		}).done(function (reviews) {
+			console.log('reviews loaded: ' + JSON.stringify(reviews));
+			console.log(reviews.content);
+			console.log(reviews.content.length);
+			callback(reviews.content);
+		})
+	}
+
+	//Show review in page
+	function showReview(review) {
+
+		$('#comments').append(
+			'<div class="blog-item-style-1 blog-item-style-3"><div class="blog-it-infor"><h3><i class="ion-android-star"></i><span>' + 
+			review.rating +'</span> /5</h3><p>' + review.coments + '</p><p><button id="review-' + review.id + '" href="/reviews/deletion/{{id}}">'+ '+ Delete</button></p></div></div>'
+		)
+	}
+
+	//Delete item from server
+	function deleteReview(revId) {
+		$.ajax({
+			method: 'DELETE',
+			url: '/reviewsList/' + revId
+		}).done(function (review) {
+			console.log("Deleted review " + revId)
+		})
+	}
+
+	$(document).ready(function () {
+
+		loadReviews(function(reviews,tam) {
+			//When reviews are loaded from server
+			if(reviews.length != 0){
+				for (var i = 0; i < reviews.length; i++) {
+					showReview(reviews[i]);
+				}
+			}
+		});
+
+		var info2 = $('.pagination');	
+
+		info2.click(function () {
+			tam+=10;
+
+			let ruta='https://localhost:8443/reviewsList/?size=' + tam;
+			console.log(ruta);
+			$("#spinner-div").show();
+			$.ajax({
+				url: ruta
+			}).done(function (reviews) {
+				console.log('reviews loaded: ' + JSON.stringify(reviews));
+				console.log(reviews.content);
+				console.log(reviews.content.length);
+				if(reviews.length != 0){
+					for (var i = tam-10; i < reviews.content.length; i++) {
+						showReview(reviews.content[i]);
+					}
+				}
+				$("#spinner-div").hide();
+			})
+		})
+
+		var info = $("#comments");
+
+		//Handle delete buttons
+		info.click(function (event) {
+			var val = $(event.target).attr("id").split("-")[1];	
+			//alert(val);
+			deleteReview(val);
+			
+			loadReviews(function(reviews,tam) {
+				//When reviews are loaded from server
+				if(reviews.length != 0){
+					for (var i = 0; i < reviews.length; i++) {
+						showReview(reviews[i]);
+					}
+				}
+			});
+			window.location.reload();
+
+			//talert("review deleted");
+		})
+
+		
+	})
+
+</script>
+
+</html>    
